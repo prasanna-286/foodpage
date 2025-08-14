@@ -1,0 +1,571 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Delight | Food Delivery Service</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.05) 50%, rgba(0, 0, 0, 0.05) 100%);
+        }
+        
+        .dish-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .restaurant-card:hover {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .rating-badge {
+            background: rgba(52, 211, 153, 0.1);
+        }
+        
+        .cart-item:hover {
+            background-color: #f8fafc;
+        }
+        
+        .drawer {
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .drawer-open {
+            transform: translateX(0);
+        }
+        
+        .drawer-closed {
+            transform: translateX(100%);
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+        
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        .search-bar:focus-within {
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+        }
+        
+        .tab-active {
+            border-bottom: 2px solid #ef4444;
+            color: #ef4444;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center mr-3">
+                    <i class="fas fa-utensils text-white text-lg"></i>
+                </div>
+                <h1 class="text-xl font-bold text-red-500">FoodDelight</h1>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#" class="text-gray-700 hover:text-red-500 font-medium">Home</a>
+                <a href="#" class="text-gray-700 hover:text-red-500 font-medium">My Orders</a>
+                <a href="#" class="text-gray-700 hover:text-red-500 font-medium">Offers</a>
+                <a href="#" class="text-gray-700 hover:text-red-500 font-medium">Help</a>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <button class="relative">
+                    <i class="fas fa-search text-gray-600 text-xl"></i>
+                </button>
+                <button id="cartBtn" class="relative">
+                    <i class="fas fa-shopping-cart text-gray-600 text-xl"></i>
+                    <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">3</span>
+                </button>
+                <button class="md:hidden">
+                    <i class="fas fa-bars text-gray-600 text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative h-64 md:h-96 w-full">
+        <img src="image.png" alt="Delicious food spread including burgers, pizza, sushi and salads arranged artistically" class="w-full h-full object-cover">
+        <div class="absolute inset-0 hero-gradient flex items-end pb-8 px-4 md:px-8">
+            <div class="max-w-3xl">
+                <h1 class="text-2xl md:text-4xl font-bold text-white mb-2">Craving something delicious?</h1>
+                <p class="text-white text-sm md:text-base mb-4">Discover restaurants and dishes that suit your taste</p>
+                
+                <div class="search-bar relative bg-white rounded-lg shadow-md flex items-center px-4 py-2">
+                    <i class="fas fa-search text-gray-400 mr-2"></i>
+                    <input type="text" placeholder="Search for restaurants or dishes..." class="w-full focus:outline-none text-sm">
+                    <button class="bg-red-500 text-white px-4 py-1 rounded text-sm font-medium ml-2">Search</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="container mx-auto px-4 py-6">
+        <h2 class="text-xl font-bold mb-4">Food Categories</h2>
+        <div class="flex overflow-x-auto pb-4 space-x-4">
+            <div class="flex-none">
+                <button class="flex flex-col items-center justify-center bg-white rounded-lg shadow-sm p-4 w-24">
+                    <div class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center mb-2">
+                        <i class="fas fa-hamburger text-amber-500"></i>
+                    </div>
+                    <span class="text-xs font-medium text-center">Burgers</span>
+                </button>
+            </div>
+            
+            <div class="flex-none">
+                <button class="flex flex-col items-center justify-center bg-white rounded-lg shadow-sm p-4 w-24">
+                    <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mb-2">
+                        <i class="fas fa-pizza-slice text-red-500"></i>
+                    </div>
+                    <span class="text-xs font-medium text-center">Pizza</span>
+                </button>
+            </div>
+            
+            <div class="flex-none">
+                <button class="flex flex-col items-center justify-center bg-white rounded-lg shadow-sm p-4 w-24">
+                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mb-2">
+                        <i class="fas fa-fish text-blue-500"></i>
+                    </div>
+                    <span class="text-xs font-medium text-center">Sushi</span>
+                </button>
+            </div>
+            
+            <div class="flex-none">
+                <button class="flex flex-col items-center justify-center bg-white rounded-lg shadow-sm p-4 w-24">
+                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mb-2">
+                        <i class="fas fa-leaf text-green-500"></i>
+                    </div>
+                    <span class="text-xs font-medium text-center">Salad</span>
+                </button>
+            </div>
+            
+            <div class="flex-none">
+                <button class="flex flex-col items-center justify-center bg-white rounded-lg shadow-sm p-4 w-24">
+                    <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mb-2">
+                        <i class="fas fa-ice-cream text-purple-500"></i>
+                    </div>
+                    <span class="text-xs font-medium text-center">Dessert</span>
+                </button>
+            </div>
+            
+            <div class="flex-none">
+                <button class="flex flex-col items-center justify-center bg-white rounded-lg shadow-sm p-4 w-24">
+                    <div class="w-10 h-10 bg-cyan-100 rounded-full flex items-center justify-center mb-2">
+                        <i class="fas fa-coffee text-cyan-500"></i>
+                    </div>
+                    <span class="text-xs font-medium text-center">Beverages</span>
+                </button>
+            </div>
+            
+            <div class="flex-none">
+                <button class="flex flex-col items-center justify-center bg-white rounded-lg shadow-sm p-4 w-24">
+                    <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center mb-2">
+                        <i class="fas fa-drumstick-bite text-yellow-500"></i>
+                    </div>
+                    <span class="text-xs font-medium text-center">Chicken</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Bites - Popular Dishes -->
+    <section class="container mx-auto px-4 py-6">
+        <h2 class="text-xl font-bold mb-4">Quick Bites</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <!-- Dish Card 1 -->
+            <div class="dish-card bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="relative">
+                    <img src="burger.png" alt="Juicy cheeseburger with melted cheddar, crispy lettuce and sesame bun" class="w-full h-40 object-cover">
+                    <div class="absolute top-2 right-2 rating-badge px-2 py-1 rounded-full flex items-center">
+                        <span class="text-xs font-bold text-emerald-500">4.5</span>
+                        <i class="fas fa-star text-emerald-500 ml-1 text-xs"></i>
+                    </div>
+                </div>
+                <div class="p-3">
+                    <h3 class="font-medium mb-1">Cheeseburger Deluxe</h3>
+                    <p class="text-gray-500 text-xs mb-2">Fresh ingredients, melted cheese</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold">₹199</span>
+                        <button class="bg-green-50 text-green-600 px-3 py-1 rounded-full text-xs font-medium">
+                            <i class="fas fa-plus"></i> Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dish Card 2 -->
+            <div class="dish-card bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="relative">
+                    <img src="pizza.jpg" alt="Pepperoni pizza with golden crust and melted cheese" class="w-full h-40 object-cover">
+                    <div class="absolute top-2 right-2 rating-badge px-2 py-1 rounded-full flex items-center">
+                        <span class="text-xs font-bold text-emerald-500">4.3</span>
+                        <i class="fas fa-star text-emerald-500 ml-1 text-xs"></i>
+                    </div>
+                </div>
+                <div class="p-3">
+                    <h3 class="font-medium mb-1">Pepperoni Pizza</h3>
+                    <p class="text-gray-500 text-xs mb-2">Classic pepperoni toppings</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold">₹299</span>
+                        <button class="bg-green-50 text-green-600 px-3 py-1 rounded-full text-xs font-medium">
+                            <i class="fas fa-plus"></i> Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dish Card 3 -->
+            <div class="dish-card bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="relative">
+                    <img src="sushi.png" alt="Sushi platter with salmon, tuna and California rolls" class="w-full h-40 object-cover">
+                    <div class="absolute top-2 right-2 rating-badge px-2 py-1 rounded-full flex items-center">
+                        <span class="text-xs font-bold text-emerald-500">4.7</span>
+                        <i class="fas fa-star text-emerald-500 ml-1 text-xs"></i>
+                    </div>
+                </div>
+                <div class="p-3">
+                    <h3 class="font-medium mb-1">Sushi Combo</h3>
+                    <p class="text-gray-500 text-xs mb-2">Fresh salmon and tuna</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold">₹399</span>
+                        <button class="bg-green-50 text-green-600 px-3 py-1 rounded-full text-xs font-medium">
+                            <i class="fas fa-plus"></i> Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dish Card 4 -->
+            <div class="dish-card bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="relative">
+                    <img src="brownie.png" alt="Chocolate brownie sundae with whipped cream and cherry" class="w-full h-40 object-cover">
+                    <div class="absolute top-2 right-2 rating-badge px-2 py-1 rounded-full flex items-center">
+                        <span class="text-xs font-bold text-emerald-500">4.8</span>
+                        <i class="fas fa-star text-emerald-500 ml-1 text-xs"></i>
+                    </div>
+                </div>
+                <div class="p-3">
+                    <h3 class="font-medium mb-1">Brownie Sundae</h3>
+                    <p class="text-gray-500 text-xs mb-2">Chocolate heaven</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold">₹149</span>
+                        <button class="bg-green-50 text-green-600 px-3 py-1 rounded-full text-xs font-medium">
+                            <i class="fas fa-plus"></i> Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Restaurants Nearby -->
+    <section class="container mx-auto px-4 py-6">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold">Restaurants Near You</h2>
+            <button class="text-red-500 font-medium text-sm">View All</button>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Restaurant Card 1 -->
+            <div class="restaurant-card bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="relative">
+                    <img src="Modren.png" alt="Modern burger restaurant interior with neon lights and wooden tables" class="w-full h-40 object-cover">
+                    <div class="absolute top-2 left-2">
+                        <div class="bg-black bg-opacity-70 text-white px-2 py-1 rounded text-xs font-medium">
+                            <i class="fas fa-tag text-yellow-400 mr-1"></i> 15% OFF
+                        </div>
+                    </div>
+                    <div class="absolute top-2 right-2">
+                        <button class="bg-white bg-opacity-90 rounded-full p-2 shadow-md">
+                            <i class="far fa-heart text-gray-600"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold mb-1">Burger King</h3>
+                    <div class="flex items-center text-sm text-gray-600 mb-2">
+                        <span class="mr-3">American, Fast Food</span>
+                        <span>•</span>
+                        <span class="ml-3">2 km</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="bg-emerald-100 text-emerald-800 px-2 py-1 rounded-full flex items-center mr-2">
+                                <span class="text-xs font-bold">4.2</span>
+                                <i class="fas fa-star text-xs ml-1"></i>
+                            </div>
+                            <span class="text-xs text-gray-500">100+ ratings</span>
+                        </div>
+                        <div class="text-xs text-gray-500">
+                            <i class="fas fa-clock"></i> 25 mins
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Restaurant Card 2 -->
+            <div class="restaurant-card bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="relative">
+                    <img src="pizzaoven.png" alt="Italian restaurant with rustic decor and pizza oven" class="w-full h-40 object-cover">
+                    <div class="absolute top-2 left-2">
+                        <div class="bg-black bg-opacity-70 text-white px-2 py-1 rounded text-xs font-medium">
+                            <i class="fas fa-bolt text-yellow-400 mr-1"></i> FAST
+                        </div>
+                    </div>
+                    <div class="absolute top-2 right-2">
+                        <button class="bg-white bg-opacity-90 rounded-full p-2 shadow-md">
+                            <i class="far fa-heart text-gray-600"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold mb-1">Donato's Pizza</h3>
+                    <div class="flex items-center text-sm text-gray-600 mb-2">
+                        <span class="mr-3">Italian, Pizza</span>
+                        <span>•</span>
+                        <span class="ml-3">1.5 km</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="bg-emerald-100 text-emerald-800 px-2 py-1 rounded-full flex items-center mr-2">
+                                <span class="text-xs font-bold">4.5</span>
+                                <i class="fas fa-star text-xs ml-1"></i>
+                            </div>
+                            <span class="text-xs text-gray-500">200+ ratings</span>
+                        </div>
+                        <div class="text-xs text-gray-500">
+                            <i class="fas fa-clock"></i> 20 mins
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Restaurant Card 3 -->
+            <div class="restaurant-card bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="relative">
+                    <img src="sushibar.png" alt="Japanese sushi bar with bamboo accents and fresh fish display" class="w-full h-40 object-cover">
+                    <div class="absolute top-2 left-2">
+                        <div class="bg-black bg-opacity-70 text-white px-2 py-1 rounded text-xs font-medium">
+                            <i class="fas fa-tag text-yellow-400 mr-1"></i> 10% OFF
+                        </div>
+                    </div>
+                    <div class="absolute top-2 right-2">
+                        <button class="bg-white bg-opacity-90 rounded-full p-2 shadow-md">
+                            <i class="far fa-heart text-gray-600"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold mb-1">Sakura Sushi</h3>
+                    <div class="flex items-center text-sm text-gray-600 mb-2">
+                        <span class="mr-3">Japanese, Sushi</span>
+                        <span>•</span>
+                        <span class="ml-3">3 km</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="bg-emerald-100 text-emerald-800 px-2 py-1 rounded-full flex items-center mr-2">
+                                <span class="text-xs font-bold">4.7</span>
+                                <i class="fas fa-star text-xs ml-1"></i>
+                            </div>
+                            <span class="text-xs text-gray-500">150+ ratings</span>
+                        </div>
+                        <div class="text-xs text-gray-500">
+                            <i class="fas fa-clock"></i> 30 mins
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Offers Section -->
+    <section class="bg-gray-100 py-8">
+        <div class="container mx-auto px-4">
+            <h2 class="text-xl font-bold mb-4">Available Offers</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-white rounded-lg shadow-md p-4 flex">
+                    <div class="bg-red-100 rounded-lg p-3 flex items-center justify-center mr-4">
+                        <i class="fas fa-percentage text-red-500 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold mb-1">60% OFF up to ₹150</h3>
+                        <p class="text-sm text-gray-600 mb-2">Use code FOODIE60 | Above ₹299</p>
+                        <button class="text-red-500 font-medium text-sm">View Terms</button>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-4 flex">
+                    <div class="bg-blue-100 rounded-lg p-3 flex items-center justify-center mr-4">
+                        <i class="fas fa-truck text-blue-500 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold mb-1">Free Delivery</h3>
+                        <p class="text-sm text-gray-600 mb-2">Above ₹499 from partner restaurants</p>
+                        <button class="text-blue-500 font-medium text-sm">View Terms</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Drawer -->
+    <div id="cartDrawer" class="fixed inset-y-0 right-0 w-full md:w-96 bg-white shadow-xl drawer drawer-closed z-50 overflow-y-auto">
+        <div class="flex flex-col h-full">
+            <!-- Cart Header -->
+            <div class="bg-white border-b p-4 sticky top-0 z-10">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-lg font-bold">Your Cart (3)</h2>
+                    <button id="closeCartBtn" class="text-gray-500">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Cart Items -->
+            <div class="flex-grow p-4 overflow-y-auto">
+                <!-- Cart Item 1 -->
+                <div class="cart-item border-b pb-4 mb-4 flex">
+                    <div class="w-20 h-20 rounded-lg overflow-hidden mr-4">
+                        <img src="https://placehold.co/200x200" alt="Cheeseburger with melted cheese" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-grow">
+                        <div class="flex justify-between">
+                            <h3 class="font-medium">Cheeseburger Deluxe</h3>
+                            <span class="font-bold">₹199</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-2">Regular • With cheese</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center border rounded-lg">
+                                <button class="px-2 py-1 text-gray-500">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <span class="px-2">1</span>
+                                <button class="px-2 py-1 text-gray-500">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                            <button class="text-red-500">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Cart Item 2 -->
+                <div class="cart-item border-b pb-4 mb-4 flex">
+                    <div class="w-20 h-20 rounded-lg overflow-hidden mr-4">
+                        <img src="https://placehold.co/200x200" alt="Pepperoni pizza slice with melted cheese" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-grow">
+                        <div class="flex justify-between">
+                            <h3 class="font-medium">Pepperoni Pizza</h3>
+                            <span class="font-bold">₹299</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-2">Medium</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center border rounded-lg">
+                                <button class="px-2 py-1 text-gray-500">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <span class="px-2">1</span>
+                                <button class="px-2 py-1 text-gray-500">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                            <button class="text-red-500">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Cart Item 3 -->
+                <div class="cart-item border-b pb-4 mb-4 flex">
+                    <div class="w-20 h-20 rounded-lg overflow-hidden mr-4">
+                        <img src="https://placehold.co/200x200" alt="Chocolate sundae with whipped cream" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-grow">
+                        <div class="flex justify-between">
+                            <h3 class="font-medium">Brownie Sundae</h3>
+                            <span class="font-bold">₹149</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-2">Regular</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center border rounded-lg">
+                                <button class="px-2 py-1 text-gray-500">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <span class="px-2">1</span>
+                                <button class="px-2 py-1 text-gray-500">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                            <button class="text-red-500">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Cart Summary -->
+            <div class="p-4 border-t bg-white sticky bottom-0">
+                <div class="flex justify-between mb-2">
+                    <span>Subtotal</span>
+                    <span class="font-bold">₹647</span>
+                </div>
+                <div class="flex justify-between mb-2">
+                    <span>Delivery Fee</span>
+                    <span class="font-bold">₹15</span>
+                </div>
+                <div class="flex justify-between mb-4">
+                    <span>Tax</span>
+                    <span class="font-bold">₹32.35</span>
+                </div>
+                <div class="flex justify-between mb-4 font-bold text-lg">
+                    <span>Total</span>
+                    <span>₹694.35</span>
+                </div>
+                <button class="w-full bg-red-500 text-white py-3 rounded-lg font-bold">
+                    Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h3 class="text-lg font-bold mb-4">FoodDelight</h3>
+                    <p class="text-gray-400 text-sm">Food delivery service that brings delicious meals to your doorstep.</p>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Company</h3>
+                    
